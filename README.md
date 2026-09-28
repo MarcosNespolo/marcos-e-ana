@@ -7,7 +7,7 @@ No ar em https://marcos-e-ana-casamento.vercel.app (painel em /painel).
 ## Como está organizado
 
 - `public/index.html`: o convite. Abre com um envelope com o nome do convidado (só na primeira visita em cada aparelho; sempre com `?previa=1`), depois os cartões em papel de borda rasgada com ramos de oliveira em aquarela. No link geral, cada pessoa escreve os nomes. Com `?c=<código>`, vira o convite nominal (de uma pessoa ou de uma família), já com os nomes para marcar quem vai.
-- Artes em `public/`: `aquarela-*.webp`, `raminho-h.webp` e `forro.webp` (aquarela), `lacre.webp` (selo de cera), `papel-rasgado.webp` e `grao.webp` (papel), `og-convite.jpg` (prévia de link).
+- Artes em `public/`: `lacre.webp` (selo de cera), `papel-rasgado.webp`, `algodao.webp` e `grao.webp` (papel e mesa), `monograma.webp` (M&A em relevo seco), `og-convite.jpg` (prévia de link).
 - `public/painel.html`: painel dos noivos em `/painel`. Cadastra convidados em lote, gera o link de cada um, mostra quem abriu, quem respondeu, as restrições alimentares e baixa a planilha.
 - `api/`: funções da Vercel.
   - `GET /api/convite?c=<código>`: nomes da família e a resposta mais recente.
