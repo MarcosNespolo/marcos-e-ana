@@ -164,11 +164,13 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
         <button type="button" data-filtro="todos" aria-pressed="true">Todos</button>
         <button type="button" data-filtro="nao-abriram" aria-pressed="false">Não abriram</button>
         <button type="button" data-filtro="abriram" aria-pressed="false">Abriram, sem resposta</button>
-        <button type="button" data-filtro="responderam" aria-pressed="false">Responderam</button>
+        <button type="button" data-filtro="confirmaram" aria-pressed="false">Confirmaram</button>
+        <button type="button" data-filtro="nao-vao" aria-pressed="false">Não vão</button>
       </div>
       <div class="linha-botoes"><button type="button" class="botao-leve" id="copiar-todos">Copiar todos os links</button></div>
       <ul class="itens" id="lista-familias"></ul>
       <p class="vazio" id="familias-vazio" hidden>Nenhum convite ainda. Use "Adicionar convidados" para gerar os links.</p>
+      <p class="vazio" id="filtro-vazio" hidden>Nenhum convite neste filtro.</p>
     </section>
 
     <section class="cartao" aria-labelledby="t-avulsas" id="secao-avulsas">
@@ -265,8 +267,10 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
   const respostasPorChave = () => new Map(dados.respostas.map((r) => [r.chave, r]));
   const aberturaDe = (codigo) => (dados.aberturas || {})[codigo] || null;
 
+  // confirmaram: pelo menos uma pessoa do convite vai; nao-vao: respondeu e ninguém vai
   function estadoDe(familia, mapa) {
-    if (mapa.has(familia.codigo)) return 'responderam';
+    const resposta = mapa.get(familia.codigo);
+    if (resposta) return resposta.pessoas.some((p) => p.vai) ? 'confirmaram' : 'nao-vao';
     return aberturaDe(familia.codigo) ? 'abriram' : 'nao-abriram';
   }
 
@@ -301,7 +305,7 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
     const mapa = respostasPorChave();
     const codigos = new Set(dados.familias.map((f) => f.codigo));
     const avulsas = dados.respostas.filter((r) => r.tipo === 'avulsa' || !codigos.has(r.chave));
-    const contagens = { todos: dados.familias.length, 'nao-abriram': 0, abriram: 0, responderam: 0 };
+    const contagens = { todos: dados.familias.length, 'nao-abriram': 0, abriram: 0, confirmaram: 0, 'nao-vao': 0 };
     for (const familia of dados.familias) contagens[estadoDe(familia, mapa)] += 1;
 
     let vao = 0, nao = 0;
@@ -318,7 +322,7 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
       ? comRestricao.map((r) => el('li', {}, el('strong', {}, `${r.familia || r.pessoas.filter((p) => p.vai).map((p) => p.nome).join(', ')}: `), r.restricoes))
       : [el('li', { class: 'vazio' }, 'Nenhuma restrição informada até agora.')]));
 
-    const rotulos = { todos: 'Todos', 'nao-abriram': 'Não abriram', abriram: 'Abriram, sem resposta', responderam: 'Responderam' };
+    const rotulos = { todos: 'Todos', 'nao-abriram': 'Não abriram', abriram: 'Abriram, sem resposta', confirmaram: 'Confirmaram', 'nao-vao': 'Não vão' };
     document.querySelectorAll('[data-filtro]').forEach((botao) => {
       botao.textContent = `${rotulos[botao.dataset.filtro]} (${contagens[botao.dataset.filtro]})`;
       botao.setAttribute('aria-pressed', String(botao.dataset.filtro === filtro));
@@ -327,6 +331,7 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
     const visiveis = dados.familias.filter((f) => filtro === 'todos' || estadoDe(f, mapa) === filtro);
     $('lista-familias').replaceChildren(...visiveis.map((f) => itemFamilia(f, mapa.get(f.codigo))));
     $('familias-vazio').hidden = dados.familias.length > 0;
+    $('filtro-vazio').hidden = dados.familias.length === 0 || visiveis.length > 0;
     $('copiar-todos').hidden = dados.familias.length === 0;
 
     $('lista-avulsas').replaceChildren(...avulsas.map(itemAvulsa));
