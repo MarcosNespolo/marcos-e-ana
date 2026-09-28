@@ -11,7 +11,9 @@ export default async function handler(req, res) {
     res.statusCode = 404;
     return res.end('Not found');
   }
-  const variaveis = ['BLOB_READ_WRITE_TOKEN', 'BLOB_STORE_ID', 'VERCEL_OIDC_TOKEN', 'PAINEL_CHAVE'].filter((k) => Boolean(process.env[k]));
+  // só os nomes, nunca os valores
+  const variaveis = Object.keys(process.env).filter((k) => /blob|painel|chave|read_write|store/i.test(k)).sort();
+  const ambiente = { VERCEL_ENV: process.env.VERCEL_ENV ?? null, totalVariaveis: Object.keys(process.env).length };
   const etapas = [];
   try {
     const gravado = await put(`diagnostico/${Date.now()}.json`, JSON.stringify({ ok: true }), {
@@ -32,5 +34,5 @@ export default async function handler(req, res) {
   }
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store');
-  res.end(JSON.stringify({ variaveis, etapas }));
+  res.end(JSON.stringify({ ambiente, variaveis, etapas }));
 }
