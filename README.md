@@ -29,6 +29,6 @@ npm run dev
 
 Abre em http://localhost:3000, com os dados em memória (somem ao reiniciar). O painel fica em `/painel` com a chave `teste`.
 
-## Quando o local for definido
+## Local
 
-Trocar "a confirmar" em `public/index.html` (no cartão e no bloco "Onde") e o campo `LOCATION` em `public/casamento.ics`.
+Restaurante Maestro Caramelo, em Guaratuba (PR). O link do mapa está no bloco "Onde" de `public/index.html` e no evento de `public/casamento.ics`.
