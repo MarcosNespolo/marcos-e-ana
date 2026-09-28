@@ -2,8 +2,9 @@ import { put, list, get, del, BlobPreconditionFailedError } from '@vercel/blob';
 import { espera } from './util.js';
 
 // Tudo fica num Blob store privado da Vercel:
-//   familias.json                      lista de famílias convidadas (editada pelo painel)
+//   familias.json                      convites (uma pessoa ou uma família), editados pelo painel
 //   respostas/<chave>/<data>-<id>.json uma entrada por envio; vale a mais recente de cada chave
+//   aberturas/<codigo>/<data>-<id>.json uma entrada cada vez que um convidado abre o link
 // <chave> é o código da família ou "avulsa-xxxxxxxxxx" para quem confirmou sem link nominal.
 
 const ACESSO = 'private';
@@ -99,8 +100,44 @@ export async function lerTodasRespostas() {
   return respostas.filter(Boolean);
 }
 
-export async function apagarRespostas(chave) {
-  const blobs = await listarTudo(`respostas/${chave}/`);
+async function apagarPrefixo(prefixo) {
+  const blobs = await listarTudo(prefixo);
   if (blobs.length) await del(blobs.map((blob) => blob.url));
   return blobs.length;
+}
+
+export function apagarRespostas(chave) {
+  return apagarPrefixo(`respostas/${chave}/`);
+}
+
+export function apagarAberturas(codigo) {
+  return apagarPrefixo(`aberturas/${codigo}/`);
+}
+
+export async function registrarAbertura(codigo) {
+  const agora = Date.now();
+  await put(`aberturas/${codigo}/${String(agora).padStart(14, '0')}.json`, JSON.stringify({ em: new Date(agora).toISOString() }), {
+    access: ACESSO,
+    contentType: 'application/json',
+    addRandomSuffix: true,
+  });
+}
+
+// Só a listagem: a data de cada abertura está no próprio nome do arquivo.
+export async function resumoAberturas() {
+  const resumo = {};
+  for (const blob of await listarTudo('aberturas/')) {
+    const [, codigo, arquivo = ''] = blob.pathname.split('/');
+    const ms = Number(arquivo.slice(0, 14));
+    if (!codigo || !Number.isFinite(ms) || ms <= 0) continue;
+    const atual = (resumo[codigo] ??= { total: 0, primeira: ms, ultima: ms });
+    atual.total += 1;
+    atual.primeira = Math.min(atual.primeira, ms);
+    atual.ultima = Math.max(atual.ultima, ms);
+  }
+  for (const item of Object.values(resumo)) {
+    item.primeira = new Date(item.primeira).toISOString();
+    item.ultima = new Date(item.ultima).toISOString();
+  }
+  return resumo;
 }

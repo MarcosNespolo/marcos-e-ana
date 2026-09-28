@@ -681,6 +681,35 @@ input[aria-invalid="true"] { border-color: var(--erro); }
     }
   }
 
+  // Registra que o convidado abriu o próprio link. Só conta depois de a página ficar
+  // alguns segundos visível: prévias de link (WhatsApp e afins) não rodam este código,
+  // e aparelhos onde os noivos entraram no painel nunca contam.
+  function marcarAbertura(codigo) {
+    const marca = `aberto-${codigo}`;
+    try {
+      if (new URLSearchParams(location.search).has('previa')) return;
+      if (localStorage.getItem('aparelho-dos-noivos')) return;
+      if (Date.now() - Number(localStorage.getItem(marca) || 0) < 30 * 60 * 1000) return;
+    } catch {}
+    let espera = null;
+    const enviar = () => {
+      document.removeEventListener('visibilitychange', vigiar);
+      try { localStorage.setItem(marca, String(Date.now())); } catch {}
+      fetch('/api/abertura', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ codigo }),
+        keepalive: true,
+      }).catch(() => {});
+    };
+    function vigiar() {
+      clearTimeout(espera);
+      if (document.visibilityState === 'visible') espera = setTimeout(enviar, 2500);
+    }
+    document.addEventListener('visibilitychange', vigiar);
+    vigiar();
+  }
+
   function prepararFamilia({ familia, resposta }) {
     estado.modo = 'familia';
     estado.familia = familia;
@@ -688,9 +717,18 @@ input[aria-invalid="true"] { border-color: var(--erro); }
     $('para-nome').textContent = familia.nome;
     mostrar($('para'), true);
     $('voce').textContent = varias ? 'vocês' : 'você';
-    $('intro').textContent = `${familia.nome}, ${varias ? 'confirmem' : 'confirme'} até 4 de outubro marcando quem vai.`;
+    $('intro').textContent = varias
+      ? `${familia.nome}, confirmem até 4 de outubro marcando quem vai.`
+      : `${familia.nome}, confirme sua presença até 4 de outubro.`;
     lista.replaceChildren(...familia.pessoas.map((nome, i) => linhaFamilia(nome, i)));
+    if (!varias) {
+      // convite individual: a própria pessoa responde, então "Vou" e "Não vou"
+      const [vou, naoVou] = lista.querySelectorAll('.escolha label');
+      vou.lastChild.textContent = 'Vou';
+      naoVou.lastChild.textContent = 'Não vou';
+    }
     estado.contador += 1;
+    marcarAbertura(familia.codigo);
     if (resposta) {
       estado.resposta = resposta;
       preencherFormulario(resposta);

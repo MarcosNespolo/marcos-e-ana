@@ -1,9 +1,9 @@
 import { timingSafeEqual } from 'node:crypto';
-import { lerFamilias, alterarFamilias, lerTodasRespostas, apagarRespostas } from './_lib/dados.js';
+import { lerFamilias, alterarFamilias, lerTodasRespostas, apagarRespostas, apagarAberturas, resumoAberturas } from './_lib/dados.js';
 import { responder, lerCorpo, linha, aleatorio, slug, codigoValido, CHAVE_AVULSA, espera } from './_lib/util.js';
 
 // Painel dos noivos. Toda chamada precisa do cabeçalho x-chave igual à variável PAINEL_CHAVE.
-//   GET  /api/painel                                  famílias + respostas
+//   GET  /api/painel                                  convites + respostas + aberturas
 //   POST /api/painel {acao: "salvar-familias", familias: [{codigo?, nome, pessoas}]}
 //   POST /api/painel {acao: "remover-familia", codigo}
 //   POST /api/painel {acao: "remover-resposta", chave}
@@ -15,8 +15,13 @@ function autorizado(req) {
 }
 
 async function montarPainel() {
-  const [{ familias }, respostas] = await Promise.all([lerFamilias({ fresco: true }), lerTodasRespostas()]);
+  const [{ familias }, respostas, aberturas] = await Promise.all([
+    lerFamilias({ fresco: true }),
+    lerTodasRespostas(),
+    resumoAberturas(),
+  ]);
   return {
+    aberturas,
     familias: Object.entries(familias)
       .map(([codigo, familia]) => ({ codigo, ...familia }))
       .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR')),
@@ -54,7 +59,7 @@ export default async function handler(req, res) {
     if (acao === 'salvar-familias') {
       const entradas = (Array.isArray(corpo.familias) ? corpo.familias : []).slice(0, 300).map(limparFamilia);
       if (!entradas.length || entradas.some((f) => !f)) {
-        return responder(res, 400, { erro: 'Cada família precisa de um nome e de pelo menos uma pessoa.' });
+        return responder(res, 400, { erro: 'Cada convite precisa de um nome e de pelo menos uma pessoa.' });
       }
       const agora = new Date().toISOString();
       await alterarFamilias((familias) => {
@@ -81,7 +86,7 @@ export default async function handler(req, res) {
         delete familias[codigo];
         return familias;
       });
-      await apagarRespostas(codigo);
+      await Promise.all([apagarRespostas(codigo), apagarAberturas(codigo)]);
       return responder(res, 200, await montarPainel());
     }
 

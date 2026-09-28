@@ -97,6 +97,7 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
 .item-nome { font-size: 17px; font-weight: 700; color: var(--tinta-forte); overflow-wrap: anywhere; }
 .selo { font-size: 14px; font-weight: 500; padding: 2px 10px; border-radius: 999px; background: rgba(92, 107, 79, 0.12); white-space: nowrap; }
 .selo.aguardando { background: rgba(138, 59, 46, 0.1); color: var(--erro); }
+.selo.abriu { background: rgba(160, 110, 20, 0.14); color: #6B470C; }
 .item p { margin: 6px 0 0; overflow-wrap: anywhere; }
 .item .pessoas-lista { color: var(--tinta-forte); }
 .item-acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
@@ -133,10 +134,10 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
 
   <div id="app" hidden>
     <section class="numeros" aria-label="Resumo">
-      <div class="numero"><strong id="n-vao">0</strong><span>pessoas confirmadas</span></div>
+      <div class="numero"><strong id="n-vao">0</strong><span>confirmados</span></div>
       <div class="numero"><strong id="n-nao">0</strong><span>não vão</span></div>
-      <div class="numero"><strong id="n-pendentes">0</strong><span>sem resposta</span></div>
-      <div class="numero"><strong id="n-familias">0 de 0</strong><span>famílias responderam</span></div>
+      <div class="numero"><strong id="n-abriram">0</strong><span>abriram e não responderam</span></div>
+      <div class="numero"><strong id="n-nao-abriram">0</strong><span>ainda não abriram</span></div>
     </section>
 
     <section class="cartao" aria-labelledby="t-restaurante">
@@ -146,39 +147,33 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
       <ul class="restricoes" id="lista-restricoes"></ul>
     </section>
 
-    <section class="cartao" aria-labelledby="t-familias">
-      <h2 id="t-familias">Famílias e links</h2>
-      <form id="form-familia">
-        <label for="familia-nome">Nome no convite</label>
-        <input id="familia-nome" type="text" maxlength="80" placeholder="Família Souza, ou Tia Lúcia e Tio Beto" required>
-        <label for="familia-pessoas">Quem está convidado</label>
-        <textarea id="familia-pessoas" rows="4" placeholder="Um nome por linha" required></textarea>
-        <p class="dica">Esses nomes aparecem no convite para cada pessoa marcar se vai.</p>
-        <div class="linha-botoes"><button type="submit" class="botao">Adicionar família</button></div>
-      </form>
+    <section class="cartao" aria-labelledby="t-convites">
+      <h2 id="t-convites">Convidados e links</h2>
+      <p class="dica">Cada convite tem um link próprio. Ele conta como aberto quando fica alguns segundos na tela de um navegador. A prévia que o WhatsApp monta ao enviar e os aparelhos onde vocês entraram neste painel não contam.</p>
 
       <details>
-        <summary>Adicionar várias de uma vez</summary>
+        <summary>Adicionar convidados</summary>
         <form id="form-varias">
-          <label for="varias">Uma família por linha, no formato <em>Nome no convite: pessoa, pessoa</em></label>
-          <textarea id="varias" rows="6" placeholder="Família Souza: Carla Souza, Beto Souza, Lia Souza&#10;Tia Lúcia: Lúcia Ramos"></textarea>
-          <div class="linha-botoes"><button type="submit" class="botao">Adicionar todas</button></div>
+          <label for="varias">Um convidado por linha. Para um convite com várias pessoas, use <em>Nome no convite: pessoa, pessoa</em></label>
+          <textarea id="varias" rows="6" placeholder="Miguel&#10;Larissa&#10;Família Souza: Carla Souza, Beto Souza"></textarea>
+          <div class="linha-botoes"><button type="submit" class="botao">Adicionar</button></div>
         </form>
       </details>
 
-      <div class="filtros" role="group" aria-label="Filtrar famílias">
-        <button type="button" data-filtro="todas" aria-pressed="true">Todas</button>
-        <button type="button" data-filtro="pendentes" aria-pressed="false">Sem resposta</button>
+      <div class="filtros" role="group" aria-label="Filtrar convites">
+        <button type="button" data-filtro="todos" aria-pressed="true">Todos</button>
+        <button type="button" data-filtro="nao-abriram" aria-pressed="false">Não abriram</button>
+        <button type="button" data-filtro="abriram" aria-pressed="false">Abriram, sem resposta</button>
         <button type="button" data-filtro="responderam" aria-pressed="false">Responderam</button>
       </div>
       <div class="linha-botoes"><button type="button" class="botao-leve" id="copiar-todos">Copiar todos os links</button></div>
       <ul class="itens" id="lista-familias"></ul>
-      <p class="vazio" id="familias-vazio" hidden>Nenhuma família cadastrada ainda. Adicione a primeira acima para gerar o link dela.</p>
+      <p class="vazio" id="familias-vazio" hidden>Nenhum convite ainda. Use "Adicionar convidados" para gerar os links.</p>
     </section>
 
     <section class="cartao" aria-labelledby="t-avulsas" id="secao-avulsas">
       <h2 id="t-avulsas">Confirmações pelo link geral</h2>
-      <p class="dica">Respostas de quem usou o link sem nome de família.</p>
+      <p class="dica">Respostas de quem usou o endereço do site sem um link pessoal.</p>
       <ul class="itens" id="lista-avulsas"></ul>
       <p class="vazio" id="avulsas-vazio" hidden>Nenhuma por enquanto.</p>
     </section>
@@ -192,8 +187,8 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
   const $ = (id) => document.getElementById(id);
   const ARMAZEM = 'painel-marcos-ana';
   let chave = '';
-  let dados = { familias: [], respostas: [] };
-  let filtro = 'todas';
+  let dados = { familias: [], respostas: [], aberturas: {} };
+  let filtro = 'todos';
   let editando = null;
 
   function el(tag, atributos = {}, ...filhos) {
@@ -219,6 +214,8 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
 
   function lerChave() { try { return localStorage.getItem(ARMAZEM) || ''; } catch { return ''; } }
   function gravarChave(valor) { try { valor ? localStorage.setItem(ARMAZEM, valor) : localStorage.removeItem(ARMAZEM); } catch {} }
+  // marca este aparelho como dos noivos: abrir os convites aqui não conta como abertura
+  function marcarAparelho() { try { localStorage.setItem('aparelho-dos-noivos', '1'); } catch {} }
 
   async function api(metodo, corpo) {
     const resposta = await fetch('/api/painel', {
@@ -239,7 +236,7 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
     const data = new Date(iso);
     if (Number.isNaN(data.getTime())) return '';
     const p = Object.fromEntries(new Intl.DateTimeFormat('pt-BR', {
-      timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+      timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
     }).formatToParts(data).map((x) => [x.type, x.value]));
     return `${p.day}/${p.month} às ${p.hour}h${p.minute}`;
   }
@@ -247,8 +244,10 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
   const linkDe = (codigo) => `${location.origin}/?c=${codigo}`;
 
   function mensagemWhatsApp(familia) {
-    const varias = familia.pessoas.length > 1;
-    return `Oi! Segue o convite do nosso jantar de casamento, no dia 16 de outubro. ${varias ? 'Confirmem' : 'Confirme'} a presença pelo link até dia 4: ${linkDe(familia.codigo)}`;
+    const link = linkDe(familia.codigo);
+    return familia.pessoas.length > 1
+      ? `Oi! Segue o convite do nosso jantar de casamento, no dia 16 de outubro. Confirmem a presença pelo link até dia 4: ${link}`
+      : `Oi, ${familia.nome}! Segue o convite do nosso jantar de casamento, no dia 16 de outubro. Confirme a presença pelo link até dia 4: ${link}`;
   }
 
   async function copiar(texto) {
@@ -263,11 +262,16 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
     }
   }
 
-  function respostasPorChave() {
-    return new Map(dados.respostas.map((r) => [r.chave, r]));
+  const respostasPorChave = () => new Map(dados.respostas.map((r) => [r.chave, r]));
+  const aberturaDe = (codigo) => (dados.aberturas || {})[codigo] || null;
+
+  function estadoDe(familia, mapa) {
+    if (mapa.has(familia.codigo)) return 'responderam';
+    return aberturaDe(familia.codigo) ? 'abriram' : 'nao-abriram';
   }
 
   function contagem(resposta) {
+    if (resposta.pessoas.length === 1) return resposta.pessoas[0].vai ? 'Vai' : 'Não vai';
     const vao = resposta.pessoas.filter((p) => p.vai).length;
     const nao = resposta.pessoas.length - vao;
     const partes = [];
@@ -276,8 +280,13 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
     return partes.join(', ');
   }
 
-  function pessoasComSituacao(resposta) {
-    return resposta.pessoas.map((p) => `${p.nome} (${p.vai ? 'vai' : 'não vai'})`).join(', ');
+  const pessoasComSituacao = (resposta) => resposta.pessoas.map((p) => `${p.nome} (${p.vai ? 'vai' : 'não vai'})`).join(', ');
+
+  function textoAbertura(abertura) {
+    if (!abertura) return null;
+    return abertura.total > 1
+      ? `Abriu ${abertura.total} vezes, a última em ${quando(abertura.ultima)}`
+      : `Abriu em ${quando(abertura.ultima)}`;
   }
 
   function detalhes(resposta) {
@@ -292,33 +301,30 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
     const mapa = respostasPorChave();
     const codigos = new Set(dados.familias.map((f) => f.codigo));
     const avulsas = dados.respostas.filter((r) => r.tipo === 'avulsa' || !codigos.has(r.chave));
+    const contagens = { todos: dados.familias.length, 'nao-abriram': 0, abriram: 0, responderam: 0 };
+    for (const familia of dados.familias) contagens[estadoDe(familia, mapa)] += 1;
 
-    let vao = 0, nao = 0, pendentes = 0, responderam = 0;
-    for (const resposta of dados.respostas) {
-      for (const p of resposta.pessoas) p.vai ? vao++ : nao++;
-    }
-    for (const familia of dados.familias) {
-      if (mapa.has(familia.codigo)) responderam++;
-      else pendentes += familia.pessoas.length;
-    }
+    let vao = 0, nao = 0;
+    for (const resposta of dados.respostas) for (const p of resposta.pessoas) p.vai ? vao++ : nao++;
+    const semResposta = contagens['nao-abriram'] + contagens.abriram;
     $('n-vao').textContent = vao;
     $('n-nao').textContent = nao;
-    $('n-pendentes').textContent = pendentes;
-    $('n-familias').textContent = `${responderam} de ${dados.familias.length}`;
-    $('resumo-restaurante').textContent = `Até agora, ${vao} ${vao === 1 ? 'pessoa confirmada' : 'pessoas confirmadas'}${pendentes ? `, e ${pendentes} ainda sem resposta` : ''}.`;
+    $('n-abriram').textContent = contagens.abriram;
+    $('n-nao-abriram').textContent = contagens['nao-abriram'];
+    $('resumo-restaurante').textContent = `Até agora, ${vao} ${vao === 1 ? 'pessoa confirmada' : 'pessoas confirmadas'}${semResposta ? `, e ${semResposta} ${semResposta === 1 ? 'convite' : 'convites'} ainda sem resposta` : ''}.`;
 
     const comRestricao = dados.respostas.filter((r) => r.restricoes && r.pessoas.some((p) => p.vai));
     $('lista-restricoes').replaceChildren(...(comRestricao.length
       ? comRestricao.map((r) => el('li', {}, el('strong', {}, `${r.familia || r.pessoas.filter((p) => p.vai).map((p) => p.nome).join(', ')}: `), r.restricoes))
       : [el('li', { class: 'vazio' }, 'Nenhuma restrição informada até agora.')]));
 
+    const rotulos = { todos: 'Todos', 'nao-abriram': 'Não abriram', abriram: 'Abriram, sem resposta', responderam: 'Responderam' };
     document.querySelectorAll('[data-filtro]').forEach((botao) => {
-      const total = { todas: dados.familias.length, pendentes: dados.familias.length - responderam, responderam }[botao.dataset.filtro];
-      botao.textContent = `${{ todas: 'Todas', pendentes: 'Sem resposta', responderam: 'Responderam' }[botao.dataset.filtro]} (${total})`;
+      botao.textContent = `${rotulos[botao.dataset.filtro]} (${contagens[botao.dataset.filtro]})`;
       botao.setAttribute('aria-pressed', String(botao.dataset.filtro === filtro));
     });
 
-    const visiveis = dados.familias.filter((f) => filtro === 'todas' || (filtro === 'responderam') === mapa.has(f.codigo));
+    const visiveis = dados.familias.filter((f) => filtro === 'todos' || estadoDe(f, mapa) === filtro);
     $('lista-familias').replaceChildren(...visiveis.map((f) => itemFamilia(f, mapa.get(f.codigo))));
     $('familias-vazio').hidden = dados.familias.length > 0;
     $('copiar-todos').hidden = dados.familias.length === 0;
@@ -329,16 +335,20 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
 
   function itemFamilia(familia, resposta) {
     if (editando === familia.codigo) return itemEdicao(familia);
+    const abertura = aberturaDe(familia.codigo);
+    const selo = resposta
+      ? el('span', { class: 'selo' }, contagem(resposta))
+      : el('span', { class: abertura ? 'selo abriu' : 'selo aguardando' }, abertura ? 'Abriu, sem resposta' : 'Não abriu');
+    const varias = familia.pessoas.length > 1;
     return el('li', { class: 'item' },
-      el('div', { class: 'item-topo' },
-        el('span', { class: 'item-nome' }, familia.nome),
-        el('span', { class: resposta ? 'selo' : 'selo aguardando' }, resposta ? contagem(resposta) : 'Aguardando resposta')),
-      el('p', { class: 'pessoas-lista' }, resposta ? pessoasComSituacao(resposta) : familia.pessoas.join(', ')),
+      el('div', { class: 'item-topo' }, el('span', { class: 'item-nome' }, familia.nome), selo),
+      (varias || (resposta && resposta.pessoas.length > 1)) && el('p', { class: 'pessoas-lista' }, resposta ? pessoasComSituacao(resposta) : familia.pessoas.join(', ')),
+      abertura && el('p', { class: 'dica' }, textoAbertura(abertura)),
       resposta && detalhes(resposta),
       el('div', { class: 'item-acoes' },
         el('button', { type: 'button', class: 'botao-leve', onclick: async () => { await copiar(linkDe(familia.codigo)); avisar(`Link de ${familia.nome} copiado`); } }, 'Copiar link'),
         el('a', { class: 'botao-leve', href: `https://wa.me/?text=${encodeURIComponent(mensagemWhatsApp(familia))}`, target: '_blank', rel: 'noopener' }, 'Enviar no WhatsApp'),
-        el('a', { class: 'botao-leve', href: linkDe(familia.codigo), target: '_blank', rel: 'noopener' }, 'Abrir convite'),
+        el('a', { class: 'botao-leve', href: `${linkDe(familia.codigo)}&previa=1`, target: '_blank', rel: 'noopener' }, 'Ver convite'),
         el('button', { type: 'button', class: 'botao-leve', onclick: () => { editando = familia.codigo; renderizar(); $(`editar-nome-${familia.codigo}`)?.focus(); } }, 'Editar'),
         el('button', { type: 'button', class: 'botao-leve perigo', onclick: () => removerFamilia(familia) }, 'Remover')));
   }
@@ -348,13 +358,12 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
     const pessoas = el('textarea', { id: `editar-pessoas-${familia.codigo}`, rows: String(Math.max(3, familia.pessoas.length + 1)) }, familia.pessoas.join('\n'));
     const form = el('form', { class: 'item', onsubmit: async (evento) => {
       evento.preventDefault();
-      await salvar([{ codigo: familia.codigo, nome: nome.value, pessoas: separarLinhas(pessoas.value) }], 'Família atualizada');
-      editando = null;
-      renderizar();
+      const ok = await salvar([{ codigo: familia.codigo, nome: nome.value, pessoas: separarLinhas(pessoas.value) }], 'Convite atualizado');
+      if (ok) { editando = null; renderizar(); }
     } },
       el('label', { for: nome.id }, 'Nome no convite'), nome,
       el('label', { for: pessoas.id }, 'Quem está convidado (um por linha)'), pessoas,
-      el('p', { class: 'dica' }, 'Se a família já respondeu e você mudar os nomes, peça para ela confirmar de novo.'),
+      el('p', { class: 'dica' }, 'O link continua o mesmo. Se a pessoa já respondeu e você mudar os nomes, peça para confirmar de novo.'),
       el('div', { class: 'linha-botoes' },
         el('button', { type: 'submit', class: 'botao' }, 'Salvar'),
         el('button', { type: 'button', class: 'botao-leve', onclick: () => { editando = null; renderizar(); } }, 'Cancelar')));
@@ -367,7 +376,7 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
       el('div', { class: 'item-topo' },
         el('span', { class: 'item-nome' }, resposta.familia || nomes),
         el('span', { class: 'selo' }, contagem(resposta))),
-      el('p', { class: 'pessoas-lista' }, pessoasComSituacao(resposta)),
+      resposta.pessoas.length > 1 && el('p', { class: 'pessoas-lista' }, pessoasComSituacao(resposta)),
       detalhes(resposta),
       el('div', { class: 'item-acoes' },
         el('button', { type: 'button', class: 'botao-leve perigo', onclick: () => removerResposta(resposta) }, 'Remover')));
@@ -390,11 +399,11 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
   }
 
   async function removerFamilia(familia) {
-    if (!confirm(`Remover ${familia.nome}? O link deixa de funcionar e a resposta, se houver, é apagada.`)) return;
+    if (!confirm(`Remover o convite de ${familia.nome}? O link deixa de funcionar e a resposta, se houver, é apagada.`)) return;
     try {
       dados = await api('POST', { acao: 'remover-familia', codigo: familia.codigo });
       renderizar();
-      avisar(`${familia.nome} removida`);
+      avisar(`Convite de ${familia.nome} removido`);
     } catch (erro) { avisar(erro.message); }
   }
 
@@ -407,22 +416,6 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
     } catch (erro) { avisar(erro.message); }
   }
 
-  $('form-familia').addEventListener('submit', async (evento) => {
-    evento.preventDefault();
-    const nome = $('familia-nome').value.trim();
-    const pessoas = separarLinhas($('familia-pessoas').value);
-    if (!nome || !pessoas.length) return avisar('Preencha o nome no convite e pelo menos uma pessoa.');
-    const botao = evento.submitter;
-    if (botao) botao.disabled = true;
-    const ok = await salvar([{ nome, pessoas }], `${nome} adicionada. O link já está na lista.`);
-    if (botao) botao.disabled = false;
-    if (ok) {
-      $('familia-nome').value = '';
-      $('familia-pessoas').value = '';
-      $('familia-nome').focus();
-    }
-  });
-
   $('form-varias').addEventListener('submit', async (evento) => {
     evento.preventDefault();
     const familias = separarLinhas($('varias').value).map((linha) => {
@@ -432,10 +425,10 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
       const pessoas = linha.slice(doisPontos + 1).split(/[,;]/).map((s) => s.trim()).filter(Boolean);
       return { nome, pessoas: pessoas.length ? pessoas : [nome] };
     }).filter((f) => f.nome);
-    if (!familias.length) return avisar('Escreva pelo menos uma família.');
+    if (!familias.length) return avisar('Escreva pelo menos um nome.');
     const botao = evento.submitter;
     if (botao) botao.disabled = true;
-    const ok = await salvar(familias, `${familias.length} ${familias.length === 1 ? 'família adicionada' : 'famílias adicionadas'}`);
+    const ok = await salvar(familias, familias.length === 1 ? 'Convite criado. O link já está na lista.' : `${familias.length} convites criados. Os links já estão na lista.`);
     if (botao) botao.disabled = false;
     if (ok) $('varias').value = '';
   });
@@ -457,24 +450,26 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
 
   $('planilha').addEventListener('click', () => {
     const mapa = respostasPorChave();
-    const linhas = [['Família', 'Pessoa', 'Presença', 'Restrições', 'WhatsApp', 'Respondido em', 'Link']];
+    const linhas = [['Convite', 'Pessoa', 'Presença', 'Abriu em', 'Aberturas', 'Restrições', 'WhatsApp', 'Respondido em', 'Link']];
     for (const familia of dados.familias) {
       const resposta = mapa.get(familia.codigo);
+      const abertura = aberturaDe(familia.codigo);
       const pessoas = resposta ? resposta.pessoas : familia.pessoas.map((nome) => ({ nome, vai: null }));
       for (const p of pessoas) {
         linhas.push([familia.nome, p.nome, p.vai === null ? 'Sem resposta' : (p.vai ? 'Vai' : 'Não vai'),
+          abertura ? quando(abertura.primeira) : '', abertura ? abertura.total : 0,
           resposta?.restricoes || '', resposta?.telefone || '', resposta ? quando(resposta.enviadoEm) : '', linkDe(familia.codigo)]);
       }
     }
     const codigos = new Set(dados.familias.map((f) => f.codigo));
     for (const resposta of dados.respostas.filter((r) => r.tipo === 'avulsa' || !codigos.has(r.chave))) {
       for (const p of resposta.pessoas) {
-        linhas.push([resposta.familia || 'Link geral', p.nome, p.vai ? 'Vai' : 'Não vai', resposta.restricoes || '', resposta.telefone || '', quando(resposta.enviadoEm), '']);
+        linhas.push([resposta.familia || 'Link geral', p.nome, p.vai ? 'Vai' : 'Não vai', '', '', resposta.restricoes || '', resposta.telefone || '', quando(resposta.enviadoEm), '']);
       }
     }
     const conteudo = '﻿' + linhas.map((l) => l.map(csv).join(';')).join('\r\n');
     const url = URL.createObjectURL(new Blob([conteudo], { type: 'text/csv;charset=utf-8' }));
-    const link = el('a', { href: url, download: 'confirmacoes-marcos-e-ana.csv' });
+    const link = el('a', { href: url, download: 'convidados-marcos-e-ana.csv' });
     document.body.append(link);
     link.click();
     link.remove();
@@ -502,6 +497,7 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
     chave = valor;
     await carregar();
     gravarChave(valor);
+    marcarAparelho();
     $('entrar').hidden = true;
     $('app').hidden = false;
     $('topo-acoes').hidden = false;
