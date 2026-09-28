@@ -722,10 +722,12 @@ input[aria-invalid="true"] { border-color: var(--erro); }
       : `${familia.nome}, confirme sua presença até 4 de outubro.`;
     lista.replaceChildren(...familia.pessoas.map((nome, i) => linhaFamilia(nome, i)));
     if (!varias) {
-      // convite individual: a própria pessoa responde, então "Vou" e "Não vou"
+      // convite individual: a própria pessoa responde, então "Vou" e "Não vou" e tudo no singular
       const [vou, naoVou] = lista.querySelectorAll('.escolha label');
       vou.lastChild.textContent = 'Vou';
       naoVou.lastChild.textContent = 'Não vou';
+      $('restricoes-dica').textContent = 'Se você não come algo, conte aqui. Se não, pode deixar em branco.';
+      $('telefone-dica').textContent = 'Opcional. Só usamos se precisarmos falar com você.';
     }
     estado.contador += 1;
     marcarAbertura(familia.codigo);
