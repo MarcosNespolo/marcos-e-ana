@@ -244,10 +244,10 @@ summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; al
   const linkDe = (codigo) => `${location.origin}/?c=${codigo}`;
 
   function mensagemWhatsApp(familia) {
-    const link = linkDe(familia.codigo);
-    return familia.pessoas.length > 1
-      ? `Oi! Segue o convite do nosso jantar de casamento, no dia 16 de outubro. Confirmem a presença pelo link até dia 4: ${link}`
-      : `Oi, ${familia.nome}! Segue o convite do nosso jantar de casamento, no dia 16 de outubro. Confirme a presença pelo link até dia 4: ${link}`;
+    const texto = familia.pessoas.length > 1
+      ? `Oii, ${familia.nome}! É com muita alegria que convidamos vocês para a celebração do nosso jantar de casamento. Será um momento muito especial e a presença de vocês é importante para nós. Solicitamos a gentileza de confirmar a presença até o dia 4.`
+      : `Oii, ${familia.nome}! É com muita alegria que convidamos você para a celebração do nosso jantar de casamento. Será um momento muito especial e a sua presença é importante para nós. Solicitamos a gentileza de confirmar a sua presença até o dia 4.`;
+    return `${texto}\n\n${linkDe(familia.codigo)}`;
   }
 
   async function copiar(texto) {
