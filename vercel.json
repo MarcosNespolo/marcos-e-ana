@@ -8,7 +8,7 @@
       "headers": [{ "key": "Cache-Control", "value": "no-store" }]
     },
     {
-      "source": "/(casal.webp|og-convite.jpg|favicon.svg|grao.webp|papel-rasgado.webp|aquarela-topo.webp|aquarela-base.webp|raminho.webp|forro.webp|lacre.webp)",
+      "source": "/(casal.webp|og-convite.jpg|favicon.svg|grao.webp|papel-rasgado.webp|aquarela-topo.webp|aquarela-base.webp|raminho-h.webp|forro.webp|lacre.webp)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
     },
     {
