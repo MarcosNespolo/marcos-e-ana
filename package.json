@@ -1,0 +1,15 @@
+{
+  "name": "marcos-e-ana",
+  "private": true,
+  "description": "Convite do jantar de casamento de Marcos e Ana, com confirmação de presença por família.",
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "dev": "node --import ./dev/registrar.mjs dev/servidor.mjs"
+  },
+  "dependencies": {
+    "@vercel/blob": "2.8.0"
+  }
+}

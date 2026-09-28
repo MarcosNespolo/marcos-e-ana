@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel dos noivos</title>
+<meta name="theme-color" content="#C6C3AE">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Sacramento&display=swap">
+<style>
+:root {
+  --fundo: #C6C3AE;
+  --papel: #F6F1E7;
+  --tinta: #5C6B4F;
+  --tinta-forte: #2F3A28;
+  --linha: rgba(92, 107, 79, 0.5);
+  --linha-suave: rgba(92, 107, 79, 0.22);
+  --erro: #8A3B2E;
+  --script: 'Sacramento', 'Snell Roundhand', 'Brush Script MT', cursive;
+  --texto: 'Alegreya Sans', 'Optima', 'Gill Sans', 'Segoe UI', sans-serif;
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--fundo); -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--fundo); color: var(--tinta); font: 400 16px/1.45 var(--texto); }
+main { max-width: 760px; margin: 0 auto; padding: max(20px, env(safe-area-inset-top)) 16px 96px; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--tinta-forte); outline-offset: 3px; }
+
+.topo { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-bottom: 16px; }
+.topo h1 { margin: 0; font-family: var(--script); font-weight: 400; font-size: 44px; line-height: 1.1; color: var(--tinta-forte); }
+.topo-acoes { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.cartao {
+  background: var(--papel);
+  border: 1px solid rgba(90, 70, 40, 0.08);
+  border-radius: 6px;
+  box-shadow: 0 10px 28px rgba(50, 40, 25, 0.16), 0 2px 5px rgba(50, 40, 25, 0.08);
+  padding: 20px;
+  margin-bottom: 18px;
+}
+.cartao h2 { margin: 0 0 12px; font-size: 20px; font-weight: 700; color: var(--tinta-forte); }
+.cartao h3 { margin: 18px 0 8px; font-size: 17px; font-weight: 500; color: var(--tinta-forte); }
+
+.botao, .botao-leve {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 44px; padding: 0 16px; border-radius: 4px;
+  font: 500 15px/1.2 var(--texto); cursor: pointer; text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.botao { border: 0; background: var(--tinta); color: var(--papel); }
+.botao:hover { background: #4E5C42; }
+.botao-leve { border: 1.5px solid var(--linha); background: rgba(255, 255, 255, 0.5); color: var(--tinta-forte); }
+.botao-leve:hover { background: rgba(255, 255, 255, 0.85); }
+.botao:disabled, .botao-leve:disabled { opacity: 0.6; cursor: progress; }
+.perigo { color: var(--erro); }
+
+label { display: block; margin: 12px 0 6px; font-weight: 500; }
+input[type="text"], input[type="password"], textarea {
+  width: 100%; min-height: 44px; padding: 9px 12px;
+  border: 1.5px solid var(--linha); border-radius: 6px;
+  background: rgba(255, 255, 255, 0.65); color: var(--tinta-forte);
+  font: 400 16px/1.4 var(--texto);
+}
+textarea { min-height: 96px; resize: vertical; }
+input:focus, textarea:focus { outline: none; border-color: var(--tinta); box-shadow: 0 0 0 3px rgba(92, 107, 79, 0.25); }
+.dica { margin: 6px 0 0; font-size: 14px; }
+.erro { color: var(--erro); font-weight: 500; margin: 12px 0 0; }
+.linha-botoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+.entrar { max-width: 420px; margin: 40px auto 0; }
+
+.numeros { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 18px; }
+.numero { background: var(--papel); border-radius: 6px; padding: 14px 16px; box-shadow: 0 4px 14px rgba(50, 40, 25, 0.12); }
+.numero strong { display: block; font-size: 32px; line-height: 1.1; color: var(--tinta-forte); }
+.numero span { font-size: 15px; }
+@media (min-width: 640px) { .numeros { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.restricoes { list-style: none; margin: 0; padding: 0; }
+.restricoes li { padding: 10px 0; border-top: 1px solid var(--linha-suave); }
+.restricoes li strong { font-weight: 500; color: var(--tinta-forte); }
+.vazio { margin: 0; font-style: italic; }
+
+details { margin-top: 14px; }
+summary { cursor: pointer; font-weight: 500; min-height: 44px; display: flex; align-items: center; }
+
+.filtros { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 6px; }
+.filtros button { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1.5px solid var(--linha); background: transparent; color: var(--tinta-forte); font: 500 15px/1 var(--texto); cursor: pointer; }
+.filtros button[aria-pressed="true"] { background: var(--tinta); border-color: var(--tinta); color: var(--papel); }
+
+.itens { list-style: none; margin: 0; padding: 0; }
+.item { padding: 14px 0; border-top: 1px solid var(--linha-suave); }
+.item-topo { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
+.item-nome { font-size: 17px; font-weight: 700; color: var(--tinta-forte); overflow-wrap: anywhere; }
+.selo { font-size: 14px; font-weight: 500; padding: 2px 10px; border-radius: 999px; background: rgba(92, 107, 79, 0.12); white-space: nowrap; }
+.selo.aguardando { background: rgba(138, 59, 46, 0.1); color: var(--erro); }
+.item p { margin: 6px 0 0; overflow-wrap: anywhere; }
+.item .pessoas-lista { color: var(--tinta-forte); }
+.item-acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.item-acoes .botao-leve { min-height: 40px; padding: 0 12px; font-size: 14px; }
+
+.aviso-flutuante {
+  position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); transform: translateX(-50%);
+  max-width: calc(100% - 32px); padding: 12px 18px; border-radius: 6px;
+  background: var(--tinta-forte); color: var(--papel); font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); z-index: 10;
+}
+</style>
+</head>
+<body>
+<main>
+  <header class="topo">
+    <h1>Painel dos noivos</h1>
+    <div class="topo-acoes" id="topo-acoes" hidden>
+      <button type="button" class="botao-leve" id="atualizar">Atualizar</button>
+      <button type="button" class="botao-leve" id="planilha">Baixar planilha</button>
+      <button type="button" class="botao-leve" id="sair">Sair</button>
+    </div>
+  </header>
+
+  <section class="cartao entrar" id="entrar">
+    <form id="form-entrar">
+      <h2>Entrar</h2>
+      <label for="chave">Chave do painel</label>
+      <input id="chave" type="password" autocomplete="current-password" required>
+      <p class="erro" id="erro-entrar" role="alert" hidden></p>
+      <div class="linha-botoes"><button type="submit" class="botao" id="botao-entrar">Entrar</button></div>
+    </form>
+  </section>
+
+  <div id="app" hidden>
+    <section class="numeros" aria-label="Resumo">
+      <div class="numero"><strong id="n-vao">0</strong><span>pessoas confirmadas</span></div>
+      <div class="numero"><strong id="n-nao">0</strong><span>não vão</span></div>
+      <div class="numero"><strong id="n-pendentes">0</strong><span>sem resposta</span></div>
+      <div class="numero"><strong id="n-familias">0 de 0</strong><span>famílias responderam</span></div>
+    </section>
+
+    <section class="cartao" aria-labelledby="t-restaurante">
+      <h2 id="t-restaurante">Para o restaurante</h2>
+      <p id="resumo-restaurante"></p>
+      <h3>Restrições alimentares</h3>
+      <ul class="restricoes" id="lista-restricoes"></ul>
+    </section>
+
+    <section class="cartao" aria-labelledby="t-familias">
+      <h2 id="t-familias">Famílias e links</h2>
+      <form id="form-familia">
+        <label for="familia-nome">Nome no convite</label>
+        <input id="familia-nome" type="text" maxlength="80" placeholder="Família Souza, ou Tia Lúcia e Tio Beto" required>
+        <label for="familia-pessoas">Quem está convidado</label>
+        <textarea id="familia-pessoas" rows="4" placeholder="Um nome por linha" required></textarea>
+        <p class="dica">Esses nomes aparecem no convite para cada pessoa marcar se vai.</p>
+        <div class="linha-botoes"><button type="submit" class="botao">Adicionar família</button></div>
+      </form>
+
+      <details>
+        <summary>Adicionar várias de uma vez</summary>
+        <form id="form-varias">
+          <label for="varias">Uma família por linha, no formato <em>Nome no convite: pessoa, pessoa</em></label>
+          <textarea id="varias" rows="6" placeholder="Família Souza: Carla Souza, Beto Souza, Lia Souza&#10;Tia Lúcia: Lúcia Ramos"></textarea>
+          <div class="linha-botoes"><button type="submit" class="botao">Adicionar todas</button></div>
+        </form>
+      </details>
+
+      <div class="filtros" role="group" aria-label="Filtrar famílias">
+        <button type="button" data-filtro="todas" aria-pressed="true">Todas</button>
+        <button type="button" data-filtro="pendentes" aria-pressed="false">Sem resposta</button>
+        <button type="button" data-filtro="responderam" aria-pressed="false">Responderam</button>
+      </div>
+      <div class="linha-botoes"><button type="button" class="botao-leve" id="copiar-todos">Copiar todos os links</button></div>
+      <ul class="itens" id="lista-familias"></ul>
+      <p class="vazio" id="familias-vazio" hidden>Nenhuma família cadastrada ainda. Adicione a primeira acima para gerar o link dela.</p>
+    </section>
+
+    <section class="cartao" aria-labelledby="t-avulsas" id="secao-avulsas">
+      <h2 id="t-avulsas">Confirmações pelo link geral</h2>
+      <p class="dica">Respostas de quem usou o link sem nome de família.</p>
+      <ul class="itens" id="lista-avulsas"></ul>
+      <p class="vazio" id="avulsas-vazio" hidden>Nenhuma por enquanto.</p>
+    </section>
+  </div>
+</main>
+
+<div class="aviso-flutuante" id="aviso" role="status" aria-live="polite" hidden></div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const ARMAZEM = 'painel-marcos-ana';
+  let chave = '';
+  let dados = { familias: [], respostas: [] };
+  let filtro = 'todas';
+  let editando = null;
+
+  function el(tag, atributos = {}, ...filhos) {
+    const no = document.createElement(tag);
+    for (const [nome, valor] of Object.entries(atributos)) {
+      if (valor === false || valor == null) continue;
+      if (nome.startsWith('on')) no.addEventListener(nome.slice(2), valor);
+      else if (nome === 'class') no.className = valor;
+      else no.setAttribute(nome, valor === true ? '' : valor);
+    }
+    for (const filho of filhos.flat()) if (filho != null && filho !== false) no.append(filho);
+    return no;
+  }
+
+  let temporizador;
+  function avisar(texto) {
+    const aviso = $('aviso');
+    aviso.textContent = texto;
+    aviso.hidden = false;
+    clearTimeout(temporizador);
+    temporizador = setTimeout(() => { aviso.hidden = true; }, 3200);
+  }
+
+  function lerChave() { try { return localStorage.getItem(ARMAZEM) || ''; } catch { return ''; } }
+  function gravarChave(valor) { try { valor ? localStorage.setItem(ARMAZEM, valor) : localStorage.removeItem(ARMAZEM); } catch {} }
+
+  async function api(metodo, corpo) {
+    const resposta = await fetch('/api/painel', {
+      method: metodo,
+      headers: { 'x-chave': chave, ...(corpo ? { 'Content-Type': 'application/json' } : {}) },
+      body: corpo ? JSON.stringify(corpo) : undefined,
+    });
+    const conteudo = await resposta.json().catch(() => ({}));
+    if (resposta.status === 401) {
+      sair();
+      throw new Error('Chave incorreta.');
+    }
+    if (!resposta.ok) throw new Error(conteudo.erro || 'Algo deu errado. Tente de novo.');
+    return conteudo;
+  }
+
+  function quando(iso) {
+    const data = new Date(iso);
+    if (Number.isNaN(data.getTime())) return '';
+    const p = Object.fromEntries(new Intl.DateTimeFormat('pt-BR', {
+      timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+    }).formatToParts(data).map((x) => [x.type, x.value]));
+    return `${p.day}/${p.month} às ${p.hour}h${p.minute}`;
+  }
+
+  const linkDe = (codigo) => `${location.origin}/?c=${codigo}`;
+
+  function mensagemWhatsApp(familia) {
+    const varias = familia.pessoas.length > 1;
+    return `Oi! Segue o convite do nosso jantar de casamento, no dia 16 de outubro. ${varias ? 'Confirmem' : 'Confirme'} a presença pelo link até dia 10: ${linkDe(familia.codigo)}`;
+  }
+
+  async function copiar(texto) {
+    try {
+      await navigator.clipboard.writeText(texto);
+    } catch {
+      const area = el('textarea', { style: 'position:fixed;opacity:0' }, texto);
+      document.body.append(area);
+      area.select();
+      document.execCommand('copy');
+      area.remove();
+    }
+  }
+
+  function respostasPorChave() {
+    return new Map(dados.respostas.map((r) => [r.chave, r]));
+  }
+
+  function contagem(resposta) {
+    const vao = resposta.pessoas.filter((p) => p.vai).length;
+    const nao = resposta.pessoas.length - vao;
+    const partes = [];
+    if (vao) partes.push(`${vao} ${vao === 1 ? 'vai' : 'vão'}`);
+    if (nao) partes.push(`${nao} não ${nao === 1 ? 'vai' : 'vão'}`);
+    return partes.join(', ');
+  }
+
+  function pessoasComSituacao(resposta) {
+    return resposta.pessoas.map((p) => `${p.nome} (${p.vai ? 'vai' : 'não vai'})`).join(', ');
+  }
+
+  function detalhes(resposta) {
+    return [
+      resposta.restricoes && el('p', {}, el('strong', {}, 'Restrições: '), resposta.restricoes),
+      resposta.telefone && el('p', {}, el('strong', {}, 'WhatsApp: '), resposta.telefone),
+      el('p', { class: 'dica' }, `Respondeu em ${quando(resposta.enviadoEm)}`),
+    ];
+  }
+
+  function renderizar() {
+    const mapa = respostasPorChave();
+    const codigos = new Set(dados.familias.map((f) => f.codigo));
+    const avulsas = dados.respostas.filter((r) => r.tipo === 'avulsa' || !codigos.has(r.chave));
+
+    let vao = 0, nao = 0, pendentes = 0, responderam = 0;
+    for (const resposta of dados.respostas) {
+      for (const p of resposta.pessoas) p.vai ? vao++ : nao++;
+    }
+    for (const familia of dados.familias) {
+      if (mapa.has(familia.codigo)) responderam++;
+      else pendentes += familia.pessoas.length;
+    }
+    $('n-vao').textContent = vao;
+    $('n-nao').textContent = nao;
+    $('n-pendentes').textContent = pendentes;
+    $('n-familias').textContent = `${responderam} de ${dados.familias.length}`;
+    $('resumo-restaurante').textContent = `Até agora, ${vao} ${vao === 1 ? 'pessoa confirmada' : 'pessoas confirmadas'}${pendentes ? `, e ${pendentes} ainda sem resposta` : ''}.`;
+
+    const comRestricao = dados.respostas.filter((r) => r.restricoes && r.pessoas.some((p) => p.vai));
+    $('lista-restricoes').replaceChildren(...(comRestricao.length
+      ? comRestricao.map((r) => el('li', {}, el('strong', {}, `${r.familia || r.pessoas.filter((p) => p.vai).map((p) => p.nome).join(', ')}: `), r.restricoes))
+      : [el('li', { class: 'vazio' }, 'Nenhuma restrição informada até agora.')]));
+
+    document.querySelectorAll('[data-filtro]').forEach((botao) => {
+      const total = { todas: dados.familias.length, pendentes: dados.familias.length - responderam, responderam }[botao.dataset.filtro];
+      botao.textContent = `${{ todas: 'Todas', pendentes: 'Sem resposta', responderam: 'Responderam' }[botao.dataset.filtro]} (${total})`;
+      botao.setAttribute('aria-pressed', String(botao.dataset.filtro === filtro));
+    });
+
+    const visiveis = dados.familias.filter((f) => filtro === 'todas' || (filtro === 'responderam') === mapa.has(f.codigo));
+    $('lista-familias').replaceChildren(...visiveis.map((f) => itemFamilia(f, mapa.get(f.codigo))));
+    $('familias-vazio').hidden = dados.familias.length > 0;
+    $('copiar-todos').hidden = dados.familias.length === 0;
+
+    $('lista-avulsas').replaceChildren(...avulsas.map(itemAvulsa));
+    $('avulsas-vazio').hidden = avulsas.length > 0;
+  }
+
+  function itemFamilia(familia, resposta) {
+    if (editando === familia.codigo) return itemEdicao(familia);
+    return el('li', { class: 'item' },
+      el('div', { class: 'item-topo' },
+        el('span', { class: 'item-nome' }, familia.nome),
+        el('span', { class: resposta ? 'selo' : 'selo aguardando' }, resposta ? contagem(resposta) : 'Aguardando resposta')),
+      el('p', { class: 'pessoas-lista' }, resposta ? pessoasComSituacao(resposta) : familia.pessoas.join(', ')),
+      resposta && detalhes(resposta),
+      el('div', { class: 'item-acoes' },
+        el('button', { type: 'button', class: 'botao-leve', onclick: async () => { await copiar(linkDe(familia.codigo)); avisar(`Link de ${familia.nome} copiado`); } }, 'Copiar link'),
+        el('a', { class: 'botao-leve', href: `https://wa.me/?text=${encodeURIComponent(mensagemWhatsApp(familia))}`, target: '_blank', rel: 'noopener' }, 'Enviar no WhatsApp'),
+        el('a', { class: 'botao-leve', href: linkDe(familia.codigo), target: '_blank', rel: 'noopener' }, 'Abrir convite'),
+        el('button', { type: 'button', class: 'botao-leve', onclick: () => { editando = familia.codigo; renderizar(); $(`editar-nome-${familia.codigo}`)?.focus(); } }, 'Editar'),
+        el('button', { type: 'button', class: 'botao-leve perigo', onclick: () => removerFamilia(familia) }, 'Remover')));
+  }
+
+  function itemEdicao(familia) {
+    const nome = el('input', { type: 'text', id: `editar-nome-${familia.codigo}`, maxlength: '80', value: familia.nome });
+    const pessoas = el('textarea', { id: `editar-pessoas-${familia.codigo}`, rows: String(Math.max(3, familia.pessoas.length + 1)) }, familia.pessoas.join('\n'));
+    const form = el('form', { class: 'item', onsubmit: async (evento) => {
+      evento.preventDefault();
+      await salvar([{ codigo: familia.codigo, nome: nome.value, pessoas: separarLinhas(pessoas.value) }], 'Família atualizada');
+      editando = null;
+      renderizar();
+    } },
+      el('label', { for: nome.id }, 'Nome no convite'), nome,
+      el('label', { for: pessoas.id }, 'Quem está convidado (um por linha)'), pessoas,
+      el('p', { class: 'dica' }, 'Se a família já respondeu e você mudar os nomes, peça para ela confirmar de novo.'),
+      el('div', { class: 'linha-botoes' },
+        el('button', { type: 'submit', class: 'botao' }, 'Salvar'),
+        el('button', { type: 'button', class: 'botao-leve', onclick: () => { editando = null; renderizar(); } }, 'Cancelar')));
+    return el('li', {}, form);
+  }
+
+  function itemAvulsa(resposta) {
+    const nomes = resposta.pessoas.map((p) => p.nome).join(', ');
+    return el('li', { class: 'item' },
+      el('div', { class: 'item-topo' },
+        el('span', { class: 'item-nome' }, resposta.familia || nomes),
+        el('span', { class: 'selo' }, contagem(resposta))),
+      el('p', { class: 'pessoas-lista' }, pessoasComSituacao(resposta)),
+      detalhes(resposta),
+      el('div', { class: 'item-acoes' },
+        el('button', { type: 'button', class: 'botao-leve perigo', onclick: () => removerResposta(resposta) }, 'Remover')));
+  }
+
+  function separarLinhas(texto) {
+    return texto.split(/\n+/).map((s) => s.trim()).filter(Boolean);
+  }
+
+  async function salvar(familias, mensagem) {
+    try {
+      dados = await api('POST', { acao: 'salvar-familias', familias });
+      renderizar();
+      avisar(mensagem);
+      return true;
+    } catch (erro) {
+      avisar(erro.message);
+      return false;
+    }
+  }
+
+  async function removerFamilia(familia) {
+    if (!confirm(`Remover ${familia.nome}? O link deixa de funcionar e a resposta, se houver, é apagada.`)) return;
+    try {
+      dados = await api('POST', { acao: 'remover-familia', codigo: familia.codigo });
+      renderizar();
+      avisar(`${familia.nome} removida`);
+    } catch (erro) { avisar(erro.message); }
+  }
+
+  async function removerResposta(resposta) {
+    if (!confirm('Apagar esta resposta?')) return;
+    try {
+      dados = await api('POST', { acao: 'remover-resposta', chave: resposta.chave });
+      renderizar();
+      avisar('Resposta apagada');
+    } catch (erro) { avisar(erro.message); }
+  }
+
+  $('form-familia').addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    const nome = $('familia-nome').value.trim();
+    const pessoas = separarLinhas($('familia-pessoas').value);
+    if (!nome || !pessoas.length) return avisar('Preencha o nome no convite e pelo menos uma pessoa.');
+    const botao = evento.submitter;
+    if (botao) botao.disabled = true;
+    const ok = await salvar([{ nome, pessoas }], `${nome} adicionada. O link já está na lista.`);
+    if (botao) botao.disabled = false;
+    if (ok) {
+      $('familia-nome').value = '';
+      $('familia-pessoas').value = '';
+      $('familia-nome').focus();
+    }
+  });
+
+  $('form-varias').addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    const familias = separarLinhas($('varias').value).map((linha) => {
+      const doisPontos = linha.indexOf(':');
+      if (doisPontos === -1) return { nome: linha, pessoas: [linha] };
+      const nome = linha.slice(0, doisPontos).trim();
+      const pessoas = linha.slice(doisPontos + 1).split(/[,;]/).map((s) => s.trim()).filter(Boolean);
+      return { nome, pessoas: pessoas.length ? pessoas : [nome] };
+    }).filter((f) => f.nome);
+    if (!familias.length) return avisar('Escreva pelo menos uma família.');
+    const botao = evento.submitter;
+    if (botao) botao.disabled = true;
+    const ok = await salvar(familias, `${familias.length} ${familias.length === 1 ? 'família adicionada' : 'famílias adicionadas'}`);
+    if (botao) botao.disabled = false;
+    if (ok) $('varias').value = '';
+  });
+
+  document.querySelectorAll('[data-filtro]').forEach((botao) => botao.addEventListener('click', () => {
+    filtro = botao.dataset.filtro;
+    renderizar();
+  }));
+
+  $('copiar-todos').addEventListener('click', async () => {
+    await copiar(dados.familias.map((f) => `${f.nome}: ${linkDe(f.codigo)}`).join('\n'));
+    avisar('Todos os links copiados');
+  });
+
+  function csv(valor) {
+    const texto = String(valor ?? '');
+    return /[";\n\r]/.test(texto) ? `"${texto.replace(/"/g, '""')}"` : texto;
+  }
+
+  $('planilha').addEventListener('click', () => {
+    const mapa = respostasPorChave();
+    const linhas = [['Família', 'Pessoa', 'Presença', 'Restrições', 'WhatsApp', 'Respondido em', 'Link']];
+    for (const familia of dados.familias) {
+      const resposta = mapa.get(familia.codigo);
+      const pessoas = resposta ? resposta.pessoas : familia.pessoas.map((nome) => ({ nome, vai: null }));
+      for (const p of pessoas) {
+        linhas.push([familia.nome, p.nome, p.vai === null ? 'Sem resposta' : (p.vai ? 'Vai' : 'Não vai'),
+          resposta?.restricoes || '', resposta?.telefone || '', resposta ? quando(resposta.enviadoEm) : '', linkDe(familia.codigo)]);
+      }
+    }
+    const codigos = new Set(dados.familias.map((f) => f.codigo));
+    for (const resposta of dados.respostas.filter((r) => r.tipo === 'avulsa' || !codigos.has(r.chave))) {
+      for (const p of resposta.pessoas) {
+        linhas.push([resposta.familia || 'Link geral', p.nome, p.vai ? 'Vai' : 'Não vai', resposta.restricoes || '', resposta.telefone || '', quando(resposta.enviadoEm), '']);
+      }
+    }
+    const conteudo = '﻿' + linhas.map((l) => l.map(csv).join(';')).join('\r\n');
+    const url = URL.createObjectURL(new Blob([conteudo], { type: 'text/csv;charset=utf-8' }));
+    const link = el('a', { href: url, download: 'confirmacoes-marcos-e-ana.csv' });
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  });
+
+  async function carregar(mensagem) {
+    dados = await api('GET');
+    renderizar();
+    if (mensagem) avisar(mensagem);
+  }
+
+  $('atualizar').addEventListener('click', () => carregar('Atualizado').catch((erro) => avisar(erro.message)));
+
+  function sair() {
+    chave = '';
+    gravarChave('');
+    $('app').hidden = true;
+    $('topo-acoes').hidden = true;
+    $('entrar').hidden = false;
+  }
+  $('sair').addEventListener('click', sair);
+
+  async function entrar(valor) {
+    chave = valor;
+    await carregar();
+    gravarChave(valor);
+    $('entrar').hidden = true;
+    $('app').hidden = false;
+    $('topo-acoes').hidden = false;
+  }
+
+  $('form-entrar').addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    const erro = $('erro-entrar');
+    erro.hidden = true;
+    const botao = $('botao-entrar');
+    botao.disabled = true;
+    try {
+      await entrar($('chave').value.trim());
+    } catch (falha) {
+      erro.textContent = falha.message;
+      erro.hidden = false;
+      $('entrar').hidden = false;
+    } finally {
+      botao.disabled = false;
+    }
+  });
+
+  const guardada = lerChave();
+  if (guardada) entrar(guardada).catch(() => sair());
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marcos e Ana, 16 de outubro</title>
+<meta name="description" content="Convite para o jantar de casamento de Marcos e Ana, sexta-feira, 16 de outubro de 2026, às 19h30. Confirme sua presença até 10 de outubro.">
+<meta name="theme-color" content="#C6C3AE">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Marcos e Ana">
+<meta property="og:title" content="Marcos e Ana, 16 de outubro">
+<meta property="og:description" content="Jantar de casamento na sexta-feira, 16 de outubro de 2026, às 19h30. Confirme sua presença até 10 de outubro.">
+<meta property="og:url" content="https://marcos-e-ana.vercel.app/">
+<meta property="og:image" content="https://marcos-e-ana.vercel.app/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ilustração de Marcos e Ana crianças vestidos de noivos, com a data 16.10.2026">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Sacramento&display=swap">
+<link rel="preload" as="image" href="/casal.webp" type="image/webp">
+<style>
+:root {
+  --fundo: #C6C3AE;
+  --papel: #F6F1E7;
+  --tinta: #5C6B4F;
+  --tinta-forte: #2F3A28;
+  --linha: rgba(92, 107, 79, 0.5);
+  --linha-suave: rgba(92, 107, 79, 0.22);
+  --erro: #8A3B2E;
+  --script: 'Sacramento', 'Snell Roundhand', 'Brush Script MT', cursive;
+  --texto: 'Alegreya Sans', 'Optima', 'Gill Sans', 'Segoe UI', sans-serif;
+  --grao: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .36 0 0 0 0 .31 0 0 0 0 .22 0 0 0 .11 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html { background: var(--fundo); -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--fundo);
+  color: var(--tinta);
+  font-family: var(--texto);
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 35%, rgba(0, 0, 0, 0) 55%, rgba(40, 45, 30, 0.16) 100%),
+    var(--grao);
+}
+
+main {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: max(28px, env(safe-area-inset-top)) 16px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 24px;
+}
+
+.sr {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+a { color: var(--tinta); }
+:focus-visible { outline: 2px solid var(--tinta-forte); outline-offset: 3px; }
+
+.para {
+  margin: 0 0 -8px;
+  min-height: 1.45em;
+  text-align: center;
+  color: var(--tinta-forte);
+  font-size: 17px;
+}
+.para strong { font-weight: 500; }
+
+.cartao {
+  position: relative;
+  background-color: var(--papel);
+  background-image: var(--grao);
+  border: 1px solid rgba(90, 70, 40, 0.08);
+  border-radius: 4px;
+  box-shadow: 0 18px 40px rgba(50, 40, 25, 0.2), 0 2px 6px rgba(50, 40, 25, 0.1);
+}
+
+/* O convite */
+.convite {
+  padding: 24px 22px 32px;
+  text-align: center;
+}
+.ilustracao {
+  display: block;
+  width: 100%;
+  max-width: 330px;
+  height: auto;
+  aspect-ratio: 976 / 1012;
+  margin: 0 auto;
+}
+.nomes {
+  margin: 2px 0 0;
+  font-family: var(--script);
+  font-weight: 400;
+  font-size: clamp(46px, 14.5vw, 58px);
+  line-height: 1.1;
+}
+.chamada { margin: 10px auto 0; max-width: 250px; font-size: 16px; text-wrap: balance; }
+.data { margin: 18px 0 0; font-size: 28px; line-height: 1.1; font-weight: 500; letter-spacing: 2px; }
+.colunas { margin-top: 18px; display: flex; justify-content: center; gap: 36px; }
+.colunas span { display: block; font-size: 16px; line-height: 1.3; }
+.colunas .rotulo { font-weight: 500; }
+.prazo { margin: 20px auto 0; max-width: 260px; font-size: 15px; text-wrap: balance; }
+.traje { margin: 10px 0 0; font-size: 15px; }
+
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 2px;
+  background: var(--tinta);
+  color: var(--papel);
+  font: 500 16px/1.2 var(--texto);
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.botao:hover { background: #4E5C42; }
+.botao:disabled { opacity: 0.7; cursor: progress; }
+.chamar { align-self: center; margin-top: -4px; }
+
+.botao-texto {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 2px;
+  border: 0;
+  background: none;
+  color: var(--tinta);
+  font: 500 16px/1.2 var(--texto);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
+}
+.botao-texto svg { flex: none; }
+
+/* Cartões de informação */
+.info { padding: 26px 24px 30px; }
+.titulo {
+  margin: 0 0 12px;
+  font-family: var(--script);
+  font-weight: 400;
+  font-size: 46px;
+  line-height: 1;
+}
+.info p { margin: 0 0 14px; }
+.info dl { margin: 0; }
+.info dt { font-weight: 500; font-size: 15px; letter-spacing: 0.2px; }
+.info dd { margin: 2px 0 16px; }
+.info dd:last-child { margin-bottom: 0; }
+.acoes-info { margin-top: 6px; }
+
+/* Confirmação */
+.intro { margin: 0 0 16px; }
+.aviso {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: rgba(92, 107, 79, 0.1);
+  font-size: 15px;
+}
+.pessoas { border-top: 1px solid var(--linha-suave); }
+.pessoa {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--linha-suave);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 12px;
+}
+.pessoa-nome { font-size: 17px; font-weight: 500; min-width: 0; overflow-wrap: anywhere; }
+.pessoa.livre { display: block; }
+.linha-nome { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+.linha-nome input { flex: 1; min-width: 0; }
+
+.escolha { display: flex; gap: 8px; }
+.escolha input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+.escolha label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1.5px solid var(--linha);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  font-size: 16px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.escolha label svg { display: none; }
+.escolha input:checked + label { background: var(--tinta); border-color: var(--tinta); color: var(--papel); }
+.escolha input:checked + label svg { display: block; }
+.escolha input:focus-visible + label { outline: 2px solid var(--tinta-forte); outline-offset: 3px; }
+.pessoa[data-erro] .escolha label { border-color: var(--erro); }
+
+.remover {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--tinta);
+  cursor: pointer;
+}
+.remover:hover { background: rgba(92, 107, 79, 0.1); }
+
+.adicionar { margin: 6px 0 4px; }
+
+.campo { margin-top: 18px; }
+.campo label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 16px; }
+input[type="text"], input[type="tel"], textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--linha);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--tinta-forte);
+  font: 400 17px/1.4 var(--texto);
+}
+textarea { resize: vertical; min-height: 84px; }
+input::placeholder, textarea::placeholder { color: rgba(47, 58, 40, 0.55); }
+input:focus, textarea:focus { outline: none; border-color: var(--tinta); box-shadow: 0 0 0 3px rgba(92, 107, 79, 0.25); }
+input[aria-invalid="true"] { border-color: var(--erro); }
+.dica { margin: 6px 0 0; font-size: 14px; }
+
+.isca { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+.erro { margin: 16px 0 0; color: var(--erro); font-weight: 500; }
+.enviar { width: 100%; margin-top: 20px; min-height: 50px; }
+
+.pronto:focus { outline: none; }
+.pronto-titulo { margin: 0 0 6px; font-size: 20px; font-weight: 500; color: var(--tinta-forte); }
+.pronto p { margin: 0 0 12px; }
+.lista { list-style: none; margin: 14px 0; padding: 0; border-top: 1px solid var(--linha-suave); }
+.lista li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--linha-suave);
+}
+.lista .situacao { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; white-space: nowrap; }
+.detalhe { font-size: 15px; }
+.acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 18px; }
+
+.assinatura {
+  margin: 8px 0 0;
+  text-align: center;
+  font-family: var(--script);
+  font-size: 34px;
+  line-height: 1.15;
+  color: var(--tinta-forte);
+}
+
+@media (min-width: 700px) {
+  main { padding-top: 56px; gap: 28px; }
+}
+</style>
+</head>
+<body>
+<main>
+  <p class="para" id="para" hidden>Para <strong id="para-nome"></strong></p>
+
+  <article class="cartao convite" aria-labelledby="nomes">
+    <img class="ilustracao" src="/casal.webp" width="976" height="1012" alt="Desenho de um casal de noivos: Marcos carrega Ana no colo, ela segura um buquê. Os rostos são fotos dos dois quando crianças.">
+    <h1 class="nomes" id="nomes">Marcos e Ana</h1>
+    <p class="chamada">Convidamos <span id="voce">você</span> para o nosso jantar de casamento</p>
+    <p class="data" aria-label="16 de outubro de 2026">16 . 10 . 2026</p>
+    <div class="colunas">
+      <div><span class="rotulo">Jantar</span><span>19h30</span></div>
+      <div><span class="rotulo">Local</span><span>a confirmar</span></div>
+    </div>
+    <p class="prazo">Pedimos a gentileza de confirmar presença até 10 de outubro</p>
+    <p class="traje">Traje esporte fino</p>
+  </article>
+
+  <a class="botao chamar" href="#confirmar">Confirmar presença</a>
+
+  <section class="cartao info" aria-labelledby="t-jantar">
+    <h2 class="titulo" id="t-jantar">O jantar</h2>
+    <dl>
+      <dt>Quando</dt>
+      <dd>Sexta-feira, 16 de outubro de 2026</dd>
+      <dt>Horário</dt>
+      <dd>O jantar começa às 19h30, e a previsão é terminar por volta das 22h.</dd>
+      <dt>Onde</dt>
+      <dd>Restaurante a confirmar. Assim que o local estiver definido, o endereço e o mapa aparecem aqui.</dd>
+      <dt>Presentes</dt>
+      <dd>Não teremos lista de presentes, então não precisam trazer nada. O que queremos é vocês lá com a gente.</dd>
+    </dl>
+    <div class="acoes-info">
+      <a class="botao-texto" href="/casamento.ics">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+        Salvar na agenda
+      </a>
+    </div>
+  </section>
+
+  <section class="cartao info" aria-labelledby="t-traje">
+    <h2 class="titulo" id="t-traje">O que vestir</h2>
+    <p>Traje esporte fino. Teremos fotógrafa durante o jantar, então vale caprichar.</p>
+    <dl>
+      <dt>Para eles</dt>
+      <dd>Calça de alfaiataria, camisa e blazer. Gravata é opcional. Sapato social ou mocassim.</dd>
+      <dt>Para elas</dt>
+      <dd>Vestido midi ou longo, macacão ou conjunto de alfaiataria. Sandália ou scarpin.</dd>
+      <dt>Melhor evitar</dt>
+      <dd>Jeans e tênis. E, por favor, deixem o branco e o off-white para a noiva.</dd>
+      <dt>Para as fotos</dt>
+      <dd>Cores lisas ou estampas discretas ficam mais bonitas do que neon e logos grandes.</dd>
+    </dl>
+  </section>
+
+  <section class="cartao info" id="confirmar" aria-labelledby="t-confirmar">
+    <h2 class="titulo" id="t-confirmar">Confirmação</h2>
+
+    <p class="aviso" id="carregando" hidden>Carregando o convite…</p>
+
+    <form id="rsvp" novalidate hidden>
+      <p class="intro" id="intro">Confirme até 10 de outubro. Escreva o nome de cada pessoa e marque quem vai.</p>
+      <p class="aviso" id="aviso" hidden></p>
+
+      <div class="pessoas" id="pessoas"></div>
+      <button type="button" class="botao-texto adicionar" id="adicionar" hidden>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Adicionar pessoa
+      </button>
+
+      <div class="campo">
+        <label for="restricoes">Restrições alimentares ou alergias</label>
+        <textarea id="restricoes" name="restricoes" rows="3" maxlength="600" aria-describedby="restricoes-dica"></textarea>
+        <p class="dica" id="restricoes-dica">Se alguém não come algo, conte aqui. Se não, pode deixar em branco.</p>
+      </div>
+
+      <div class="campo">
+        <label for="telefone">WhatsApp para contato</label>
+        <input id="telefone" name="telefone" type="tel" inputmode="tel" autocomplete="tel" maxlength="40" aria-describedby="telefone-dica">
+        <p class="dica" id="telefone-dica">Opcional. Usamos só para avisar sobre o local.</p>
+      </div>
+
+      <div class="isca" aria-hidden="true">
+        <label for="site">Deixe este campo vazio</label>
+        <input id="site" name="site" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <p class="erro" id="erro" role="alert" hidden></p>
+      <button type="submit" class="botao enviar" id="enviar">Enviar confirmação</button>
+    </form>
+
+    <div class="pronto" id="pronto" tabindex="-1" hidden>
+      <p class="pronto-titulo" id="pronto-titulo"></p>
+      <p id="pronto-texto"></p>
+      <ul class="lista" id="pronto-lista"></ul>
+      <p class="detalhe" id="pronto-restricoes" hidden></p>
+      <p class="detalhe" id="pronto-quando"></p>
+      <div class="acoes">
+        <a class="botao" href="/casamento.ics" id="pronto-agenda">Salvar na agenda</a>
+        <button type="button" class="botao-texto" id="alterar">Alterar resposta</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="assinatura">Com carinho,<br>Marcos e Ana</p>
+</main>
+
+<template id="modelo-familia">
+  <div class="pessoa" role="group">
+    <span class="pessoa-nome"></span>
+    <div class="escolha">
+      <input type="radio" value="sim"><label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Vai</label>
+      <input type="radio" value="nao"><label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Não vai</label>
+    </div>
+  </div>
+</template>
+
+<template id="modelo-livre">
+  <div class="pessoa livre" role="group">
+    <div class="linha-nome">
+      <label class="sr"></label>
+      <input type="text" maxlength="80" placeholder="Nome e sobrenome">
+      <button type="button" class="remover" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="escolha">
+      <input type="radio" value="sim"><label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Vai</label>
+      <input type="radio" value="nao"><label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Não vai</label>
+    </div>
+  </div>
+</template>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const ARMAZEM = 'convite-marcos-ana';
+  const estado = { modo: 'livre', codigo: null, familia: null, chave: null, resposta: null, contador: 0 };
+
+  const form = $('rsvp');
+  const lista = $('pessoas');
+  const botaoEnviar = $('enviar');
+
+  function lerLocal() {
+    try { return JSON.parse(localStorage.getItem(ARMAZEM) || 'null'); } catch { return null; }
+  }
+  function gravarLocal(valor) {
+    try { localStorage.setItem(ARMAZEM, JSON.stringify(valor)); } catch {}
+  }
+
+  function mostrar(el, visivel = true) { el.hidden = !visivel; }
+
+  function quando(iso) {
+    const data = new Date(iso);
+    if (Number.isNaN(data.getTime())) return '';
+    const partes = Object.fromEntries(new Intl.DateTimeFormat('pt-BR', {
+      timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+    }).formatToParts(data).map((p) => [p.type, p.value]));
+    return `${partes.day}/${partes.month} às ${partes.hour}h${partes.minute}`;
+  }
+
+  // Linha de pessoa com as opções Vai / Não vai
+  function prepararEscolha(linha, indice) {
+    const nome = `p${estado.contador}-${indice}`;
+    linha.querySelectorAll('.escolha input').forEach((input) => {
+      input.name = nome;
+      input.id = `${nome}-${input.value}`;
+      input.nextElementSibling.htmlFor = input.id;
+      input.addEventListener('change', () => delete linha.dataset.erro);
+    });
+  }
+
+  function linhaFamilia(nome, indice) {
+    const linha = $('modelo-familia').content.firstElementChild.cloneNode(true);
+    const rotulo = linha.querySelector('.pessoa-nome');
+    rotulo.textContent = nome;
+    rotulo.id = `nome-${indice}`;
+    linha.setAttribute('aria-labelledby', rotulo.id);
+    linha.dataset.nome = nome;
+    prepararEscolha(linha, indice);
+    return linha;
+  }
+
+  function linhaLivre(nome = '', vai = null) {
+    estado.contador += 1;
+    const indice = estado.contador;
+    const linha = $('modelo-livre').content.firstElementChild.cloneNode(true);
+    const campo = linha.querySelector('input[type="text"]');
+    const rotulo = linha.querySelector('label.sr');
+    campo.id = `nome-livre-${indice}`;
+    rotulo.htmlFor = campo.id;
+    campo.value = nome;
+    campo.autocomplete = lista.children.length === 0 ? 'name' : 'off';
+    campo.addEventListener('input', () => campo.removeAttribute('aria-invalid'));
+    prepararEscolha(linha, indice);
+    if (vai !== null) linha.querySelector(`.escolha input[value="${vai ? 'sim' : 'nao'}"]`).checked = true;
+    linha.querySelector('.remover').addEventListener('click', () => {
+      linha.remove();
+      numerarLivres();
+      lista.querySelector('input[type="text"]')?.focus();
+    });
+    return linha;
+  }
+
+  function numerarLivres() {
+    [...lista.children].forEach((linha, i) => {
+      const n = i + 1;
+      linha.setAttribute('aria-label', `Pessoa ${n}`);
+      linha.querySelector('label.sr').textContent = `Nome da pessoa ${n}`;
+      const remover = linha.querySelector('.remover');
+      remover.hidden = lista.children.length === 1;
+      remover.setAttribute('aria-label', `Remover pessoa ${n}`);
+    });
+  }
+
+  function preencherFormulario(resposta) {
+    if (estado.modo === 'familia') {
+      const escolhas = new Map((resposta?.pessoas || []).map((p) => [p.nome, p.vai]));
+      [...lista.children].forEach((linha) => {
+        const vai = escolhas.get(linha.dataset.nome);
+        if (typeof vai === 'boolean') linha.querySelector(`.escolha input[value="${vai ? 'sim' : 'nao'}"]`).checked = true;
+      });
+    } else {
+      lista.replaceChildren();
+      const pessoas = resposta?.pessoas?.length ? resposta.pessoas : [{ nome: '', vai: null }];
+      pessoas.forEach((p) => lista.append(linhaLivre(p.nome, p.vai)));
+      numerarLivres();
+    }
+    $('restricoes').value = resposta?.restricoes || '';
+    $('telefone').value = resposta?.telefone || '';
+  }
+
+  function mostrarFormulario(focar) {
+    mostrar($('pronto'), false);
+    mostrar(form, true);
+    if (focar) (lista.querySelector('input') || $('restricoes')).focus();
+  }
+
+  function mostrarPronto(resposta, acabouDeEnviar) {
+    const pessoas = resposta.pessoas || [];
+    const vao = pessoas.filter((p) => p.vai);
+    const varias = pessoas.length > 1;
+    $('pronto-titulo').textContent = acabouDeEnviar
+      ? 'Recebemos a confirmação.'
+      : (varias ? 'Vocês já responderam.' : 'Você já respondeu.');
+    $('pronto-texto').textContent = vao.length
+      ? 'Até sexta-feira, dia 16, às 19h30!'
+      : (varias ? 'Vamos sentir a falta de vocês. Obrigado por avisar.' : 'Vamos sentir sua falta. Obrigado por avisar.');
+
+    const itens = pessoas.map((p) => {
+      const item = document.createElement('li');
+      const nome = document.createElement('span');
+      nome.textContent = p.nome;
+      const situacao = document.createElement('span');
+      situacao.className = 'situacao';
+      situacao.innerHTML = p.vai
+        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 12h12"/></svg>';
+      situacao.append(p.vai ? 'Vai' : 'Não vai');
+      item.append(nome, situacao);
+      return item;
+    });
+    $('pronto-lista').replaceChildren(...itens);
+
+    const restricoes = $('pronto-restricoes');
+    restricoes.textContent = resposta.restricoes ? `Restrições: ${resposta.restricoes}` : '';
+    mostrar(restricoes, Boolean(resposta.restricoes));
+    $('pronto-quando').textContent = resposta.enviadoEm ? `Resposta enviada em ${quando(resposta.enviadoEm)}.` : '';
+    mostrar($('pronto-agenda'), vao.length > 0);
+
+    mostrar(form, false);
+    mostrar($('pronto'), true);
+    if (acabouDeEnviar) {
+      $('pronto').focus({ preventScroll: true });
+      $('confirmar').scrollIntoView({ block: 'start' });
+    }
+  }
+
+  function erro(mensagem, alvo) {
+    const el = $('erro');
+    el.textContent = mensagem;
+    mostrar(el, Boolean(mensagem));
+    if (alvo) alvo.focus();
+  }
+
+  function coletar() {
+    const pessoas = [];
+    for (const linha of lista.children) {
+      const campo = linha.querySelector('input[type="text"]');
+      const nome = (estado.modo === 'familia' ? linha.dataset.nome : campo.value).trim().replace(/\s+/g, ' ');
+      if (!nome) {
+        campo.setAttribute('aria-invalid', 'true');
+        return { falha: 'Escreva o nome de cada pessoa.', alvo: campo };
+      }
+      const marcado = linha.querySelector('.escolha input:checked');
+      if (!marcado) {
+        linha.dataset.erro = '';
+        return { falha: 'Marque se cada pessoa vai ou não.', alvo: linha.querySelector('.escolha input') };
+      }
+      pessoas.push({ nome, vai: marcado.value === 'sim' });
+    }
+    return { pessoas };
+  }
+
+  // ao corrigir qualquer campo, a mensagem de erro anterior some
+  form.addEventListener('input', () => erro(''));
+  form.addEventListener('change', () => erro(''));
+
+  form.addEventListener('submit', async (evento) => {
+    evento.preventDefault();
+    erro('');
+    const { pessoas, falha, alvo } = coletar();
+    if (falha) return erro(falha, alvo);
+
+    const corpo = {
+      codigo: estado.codigo,
+      chave: estado.chave,
+      pessoas,
+      restricoes: $('restricoes').value.trim(),
+      telefone: $('telefone').value.trim(),
+      site: $('site').value,
+    };
+
+    botaoEnviar.disabled = true;
+    botaoEnviar.textContent = 'Enviando…';
+    try {
+      const resposta = await fetch('/api/rsvp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(corpo),
+      });
+      const dados = await resposta.json().catch(() => ({}));
+      if (!resposta.ok) throw new Error(dados.erro || 'Não conseguimos enviar agora. Tente de novo em alguns minutos.');
+      const salva = { pessoas, restricoes: corpo.restricoes, telefone: corpo.telefone, enviadoEm: dados.enviadoEm };
+      estado.resposta = salva;
+      if (estado.modo === 'livre' && dados.chave) {
+        estado.chave = dados.chave;
+        gravarLocal({ chave: dados.chave, ...salva });
+      }
+      mostrarPronto(salva, true);
+    } catch (falhaEnvio) {
+      const semRede = falhaEnvio instanceof TypeError;
+      erro(semRede ? 'Sem conexão com a internet. Verifique e tente de novo.' : falhaEnvio.message);
+    } finally {
+      botaoEnviar.disabled = false;
+      botaoEnviar.textContent = 'Enviar confirmação';
+    }
+  });
+
+  $('adicionar').addEventListener('click', () => {
+    const linha = linhaLivre();
+    lista.append(linha);
+    numerarLivres();
+    linha.querySelector('input[type="text"]').focus();
+  });
+
+  $('alterar').addEventListener('click', () => {
+    preencherFormulario(estado.resposta);
+    mostrarFormulario(true);
+  });
+
+  function prepararLivre(avisoTexto) {
+    estado.modo = 'livre';
+    mostrar($('adicionar'), true);
+    if (avisoTexto) {
+      $('aviso').textContent = avisoTexto;
+      mostrar($('aviso'), true);
+    }
+    const anterior = lerLocal();
+    if (anterior?.chave && Array.isArray(anterior.pessoas)) {
+      estado.chave = anterior.chave;
+      estado.resposta = anterior;
+      preencherFormulario(anterior);
+      mostrarPronto(anterior, false);
+    } else {
+      preencherFormulario(null);
+      mostrarFormulario(false);
+    }
+  }
+
+  function prepararFamilia({ familia, resposta }) {
+    estado.modo = 'familia';
+    estado.familia = familia;
+    const varias = familia.pessoas.length > 1;
+    $('para-nome').textContent = familia.nome;
+    mostrar($('para'), true);
+    $('voce').textContent = varias ? 'vocês' : 'você';
+    $('intro').textContent = `${familia.nome}, ${varias ? 'confirmem' : 'confirme'} até 10 de outubro marcando quem vai.`;
+    lista.replaceChildren(...familia.pessoas.map((nome, i) => linhaFamilia(nome, i)));
+    estado.contador += 1;
+    if (resposta) {
+      estado.resposta = resposta;
+      preencherFormulario(resposta);
+      mostrarPronto(resposta, false);
+    } else {
+      preencherFormulario(null);
+      mostrarFormulario(false);
+    }
+  }
+
+  async function iniciar() {
+    const codigo = (new URLSearchParams(location.search).get('c') || '').trim().toLowerCase();
+    if (!codigo) return prepararLivre();
+
+    estado.codigo = codigo;
+    $('para-nome').textContent = ' ';
+    mostrar($('para'), true);
+    mostrar($('carregando'), true);
+    try {
+      const resposta = await fetch(`/api/convite?c=${encodeURIComponent(codigo)}`, { headers: { Accept: 'application/json' } });
+      if (resposta.ok) return prepararFamilia(await resposta.json());
+      estado.codigo = null;
+      mostrar($('para'), false);
+      prepararLivre(resposta.status === 404
+        ? 'Não encontramos o convite deste link. Você ainda pode confirmar escrevendo os nomes abaixo.'
+        : 'Não conseguimos carregar o convite agora. Você pode confirmar escrevendo os nomes abaixo.');
+    } catch {
+      estado.codigo = null;
+      mostrar($('para'), false);
+      prepararLivre('Não conseguimos carregar o convite agora. Você pode confirmar escrevendo os nomes abaixo.');
+    } finally {
+      mostrar($('carregando'), false);
+    }
+  }
+
+  iniciar();
+})();
+</script>
+</body>
+</html>
