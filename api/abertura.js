@@ -5,7 +5,9 @@ import { responder, lerCorpo, codigoValido } from './_lib/util.js';
 // A página só chama isto depois de ficar alguns segundos visível num navegador de verdade.
 // Prévias de link (WhatsApp, Telegram, iMessage, Facebook...) baixam só o HTML e não rodam
 // esse código; mesmo assim, qualquer acesso com cara de robô é descartado aqui.
-const ROBOS = /bot|crawl|spider|slurp|preview|whatsapp|facebookexternalhit|facebookcatalog|meta-external|telegram|slack|discord|skype|linkedin|twitter|embedly|pinterest|vkshare|headless|phantom|lighthouse|pagespeed|python|curl|wget|go-http|java\/|okhttp|axios|node-fetch|undici/i;
+// Só nomes de robôs: o navegador embutido de apps (Instagram, Telegram, LinkedIn...) é gente de verdade.
+// O robô de prévia do WhatsApp se apresenta como "WhatsApp/2.x"; os demais têm "bot" ou "preview" no nome.
+const ROBOS = /bot|crawl|spider|slurp|preview|^whatsapp\/|facebookexternalhit|facebookcatalog|meta-external|embedly|vkshare|headless|phantom|lighthouse|pagespeed|^(python|curl|wget|go-http|java|okhttp|axios|node-fetch|undici)/i;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return responder(res, 405, { erro: 'Método não permitido.' });
