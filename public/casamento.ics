@@ -4,15 +4,15 @@ PRODID:-//Marcos e Ana//Convite//PT
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-UID:jantar-casamento-20261016@marcos-e-ana.vercel.app
+UID:jantar-casamento-20261016@marcos-e-ana-casamento.vercel.app
 DTSTAMP:20260928T150000Z
 DTSTART:20261016T223000Z
 DTEND:20261017T010000Z
 SUMMARY:Jantar de casamento de Marcos e Ana
 DESCRIPTION:Traje esporte fino. Detalhes e confirmação de presença:
-  https://marcos-e-ana.vercel.app
+  https://marcos-e-ana-casamento.vercel.app
 LOCATION:Local a confirmar
-URL:https://marcos-e-ana.vercel.app/
+URL:https://marcos-e-ana-casamento.vercel.app/
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Jantar de casamento de Marcos e Ana

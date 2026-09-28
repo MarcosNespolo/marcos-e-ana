@@ -2,6 +2,8 @@
 
 Convite do jantar de casamento (sexta-feira, 16/10/2026, 19h30), com confirmação de presença por família e um painel para os noivos acompanharem as respostas.
 
+No ar em https://marcos-e-ana-casamento.vercel.app (painel em /painel).
+
 ## Como está organizado
 
 - `public/index.html`: o convite. No link geral, cada pessoa escreve os nomes. Com `?c=<código>`, vira o convite nominal da família, já com os nomes para marcar quem vai.
