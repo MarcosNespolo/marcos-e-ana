@@ -6,13 +6,14 @@ No ar em https://marcos-e-ana-casamento.vercel.app (painel em /painel).
 
 ## Como está organizado
 
-- `public/index.html`: o convite. No link geral, cada pessoa escreve os nomes. Com `?c=<código>`, vira o convite nominal da família, já com os nomes para marcar quem vai.
-- `public/painel.html`: painel dos noivos em `/painel`. Cadastra famílias (uma a uma ou várias de uma vez), gera o link de cada uma, mostra quem respondeu, as restrições alimentares e baixa a planilha.
+- `public/index.html`: o convite. No link geral, cada pessoa escreve os nomes. Com `?c=<código>`, vira o convite nominal (de uma pessoa ou de uma família), já com os nomes para marcar quem vai.
+- `public/painel.html`: painel dos noivos em `/painel`. Cadastra convidados em lote, gera o link de cada um, mostra quem abriu, quem respondeu, as restrições alimentares e baixa a planilha.
 - `api/`: funções da Vercel.
   - `GET /api/convite?c=<código>`: nomes da família e a resposta mais recente.
   - `POST /api/rsvp`: grava uma confirmação.
+  - `POST /api/abertura`: registra que um convidado abriu o próprio link. A página só chama depois de ~2,5 s visível; prévias de link não rodam o script e robôs são descartados pelo user agent. Não conta com `?previa=1` nem em aparelhos que já entraram no painel.
   - `GET|POST /api/painel`: dados e ações do painel (exige o cabeçalho `x-chave`).
-- As respostas ficam num Blob store **privado** da Vercel: `familias.json` com a lista de convidados e `respostas/<chave>/…json`, uma entrada por envio (vale a mais recente).
+- As respostas ficam num Blob store **privado** da Vercel: `familias.json` com a lista de convidados e `respostas/<chave>/…json`, uma entrada por envio (vale a mais recente), e `aberturas/<código>/…json`, uma entrada por abertura (a data fica no nome do arquivo).
 
 ## Configuração na Vercel
 
