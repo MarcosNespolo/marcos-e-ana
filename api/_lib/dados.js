@@ -1,4 +1,4 @@
-import { put, list, get, del, BlobPreconditionFailedError } from '@vercel/blob';
+import { put, list, get, head, del, BlobPreconditionFailedError, BlobNotFoundError } from '@vercel/blob';
 import { espera } from './util.js';
 
 // Tudo fica num Blob store privado da Vercel:
@@ -13,22 +13,33 @@ const FAMILIAS = 'familias.json';
 async function lerTexto(caminho, { fresco = false } = {}) {
   const resultado = await get(caminho, { access: ACESSO, useCache: !fresco });
   if (!resultado || resultado.statusCode !== 200) return null;
-  const conteudo = await new Response(resultado.stream).text();
-  return { conteudo, etag: resultado.blob.etag };
+  return new Response(resultado.stream).text();
 }
 
 export async function lerFamilias({ fresco = false } = {}) {
-  const lido = await lerTexto(FAMILIAS, { fresco });
-  if (!lido) return { familias: {}, etag: null };
-  const dados = JSON.parse(lido.conteudo);
-  return { familias: dados.familias ?? {}, etag: lido.etag };
+  const conteudo = await lerTexto(FAMILIAS, { fresco });
+  if (!conteudo) return { familias: {} };
+  return { familias: JSON.parse(conteudo).familias ?? {} };
+}
+
+// O ETag que o put aceita no ifMatch vem do head() (API). O get() devolve o ETag do CDN,
+// que chega fraco (W/"...") e nunca bate.
+async function etagAtual(caminho) {
+  try {
+    return (await head(caminho)).etag;
+  } catch (erro) {
+    if (erro instanceof BlobNotFoundError) return null;
+    throw erro;
+  }
 }
 
 // Lê a versão atual, aplica a alteração e grava só se ninguém mexeu no meio (ETag).
+// O ETag é lido antes do conteúdo: se alguém gravar entre os dois, o put falha e tenta de novo.
 export async function alterarFamilias(alterar) {
   let ultimoErro;
   for (let tentativa = 0; tentativa < 5; tentativa++) {
-    const { familias, etag } = await lerFamilias({ fresco: true });
+    const etag = await etagAtual(FAMILIAS);
+    const { familias } = await lerFamilias({ fresco: true });
     const novas = alterar(structuredClone(familias));
     try {
       await put(FAMILIAS, JSON.stringify({ familias: novas }), {

@@ -1,5 +1,6 @@
 // Substituto em memória do @vercel/blob para rodar o site localmente (npm run dev).
-// Imita só o que o site usa: put, get, list, del e o erro de ETag.
+// Imita só o que o site usa: put, get, head, list, del e o erro de ETag.
+// Como no Blob de verdade, o get() devolve o ETag fraco do CDN (W/"...") e só o do head() serve no ifMatch.
 import { randomBytes } from 'node:crypto';
 
 const HOST = 'https://local.private.blob.vercel-storage.com/';
@@ -9,6 +10,11 @@ export class BlobError extends Error {}
 export class BlobPreconditionFailedError extends BlobError {
   constructor() {
     super('Precondition failed: ETag mismatch.');
+  }
+}
+export class BlobNotFoundError extends BlobError {
+  constructor() {
+    super('The requested blob does not exist');
   }
 }
 
@@ -43,8 +49,15 @@ export async function get(urlOuCaminho, opcoes = {}) {
     statusCode: 200,
     stream: new Response(item.corpo).body,
     headers: new Headers(),
-    blob: { ...metadados(caminhoDe(urlOuCaminho), item), contentType: item.contentType, contentDisposition: '', cacheControl: '' },
+    blob: { ...metadados(caminhoDe(urlOuCaminho), item), etag: `W/${item.etag}`, contentType: item.contentType, contentDisposition: '', cacheControl: '' },
   };
+}
+
+export async function head(urlOuCaminho) {
+  const pathname = caminhoDe(urlOuCaminho);
+  const item = blobs.get(pathname);
+  if (!item) throw new BlobNotFoundError();
+  return { ...metadados(pathname, item), contentType: item.contentType };
 }
 
 export async function list({ prefix = '', cursor, limit = 1000 } = {}) {
